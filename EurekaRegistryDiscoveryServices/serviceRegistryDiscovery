@@ -1,0 +1,78 @@
+service Registry and service discovery(eureka netflix)
+=======================================================
+
+->In a microservices architecture, services need to be able to find and communicate with each other.
+ 	Eureka is a service registry and discovery server that enables microservices to do just that.
+
+->Eureka consists of two main components: the Eureka server and the Eureka client. 
+	The Eureka server acts as a central registry where all the microservices register themselves. 
+	The Eureka client is a module that runs on each microservice and registers it with the Eureka server.
+
+->When a microservice wants to communicate with another microservice, it queries the Eureka server for the hostname and 
+	port of the desired service. The Eureka server responds with the available instances of the service, and the client can 
+	then choose one to communicate with.
+	
+	
+The Eureka server also monitors the availability of each registered service instance. 
+If a service instance goes down, Eureka will mark it as unavailable, and the client will be redirected to another available instance.
+
+In Spring, you can use the Spring Cloud Netflix Eureka library to implement Eureka service discovery. 
+This library provides annotations and configuration options to make it easy to register and discover services in a Spring application.
+
+Overall, Eureka provides a simple and effective way for microservices to find and communicate with each other in a distributed system.
+
+
+
+->Eureka is a service registry and discovery services orginally developed by the netflix and now part of spring cloud
+->what is the purpose of eureka?
+	>In microservice architecture we have number of services avaliable, so to check wether a specific service is up are not is so difficult
+	we have to go each and every  service and we have to check whether it is up or not
+	>in order to communicate each other we have to hardcode the host name
+->how eureka is useful?
+	=>In a microservices architecture, services need to be able to communicate with each other in order to function properly. 
+	Eureka provides a way for services to dynamically discover and communicate with each other, without having to hardcode specific host
+	 and port information.
+->how to implement eureka in our project?
+
+	=>Eureka consists of two main components: 
+	 1.Eureka server
+	 2.Eureka client. 
+	 The Eureka server is responsible for registering services and maintaining a registry of available services. 
+	 The Eureka client is responsible for registering a service with the Eureka server and discovering other services registered with the same server.
+	 
+	 To use Eureka in a Spring application, you can add the "Spring Cloud Eureka client" dependency to your project, 
+	 and configure the application to register with the Eureka server.
+	 Once the application is registered, it can use the Eureka client to discover other services and communicate with them.
+	 
+	 
+Steps to create Eureka server:
+==============================
+	->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
