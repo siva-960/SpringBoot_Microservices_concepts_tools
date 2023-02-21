@@ -47,11 +47,138 @@ Overall, Eureka provides a simple and effective way for microservices to find an
 	 
 Steps to create Eureka server:
 ==============================
-	->create the project
-		->create spring stater project
+	->create the project:
+	=====================
+		->create spring stater project:
+		===================================
 	->add eureka sever dependency
-	->enable eureka server
-	->configure the properties
+	
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+		</dependency>
+		
+	->enable eureka server:
+	=======================
+	
+@SpringBootApplication
+@EnableEurekaServer
+public class EurekaServerApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(EurekaServerApplication.class, args);
+	}
+
+}
+
+	
+->configure the properties:
+=============================
+#eureka server by default runs in 8761
+server.port=8761
+#to make our microservices to registry to eureka server
+#but this eureka server so we don't want to register it self 
+eureka.client.register-with-eureka=false
+#to fetch the specific service which is registered with eureka 
+#this is eureka server so don't need to fetch
+eureka.client.fetch-registry=false
+
+
+
+steps to implement eureka client:
+=================================
+->create spring starter project:
+=================================
+->create springboot project(Eureka client1)
+->create springboot project (Eureka client2)
+
+=>add eureka client dependency in pom.xml:
+===========================================
+<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+
+	=>but why only for eureka client why not for eureka server - spring-boot-starter-web dependency?
+		->The spring-boot-starter-web dependency is required for Eureka client because it contains the necessary libraries for building web applications using Spring Boot.
+
+		->When a microservice registers with Eureka server, it needs to expose its REST API endpoint(s) so that other microservices can discover and communicate with it.
+		 The spring-boot-starter-web dependency provides the required libraries for building RESTful web services using Spring Boot, 
+		 including the ability to configure a web server, handle HTTP requests and responses, and map URLs to specific functions.
+
+		->On the other hand, the Eureka server itself doesn't need to provide any RESTful API endpoint, 
+		it just needs to keep track of registered microservices and maintain a registry of their locations. Therefore, it doesn't require the spring-boot-starter-web dependency.
+
+		->In summary, the spring-boot-starter-web dependency is required for Eureka client because it provides the necessary libraries for building RESTful web services 
+		and exposing them to the Eureka server.
+
+
+=>enable discovery client
+===========================
+
+	->There are different ways to enable a Spring Boot application as a Eureka client, depending on the Spring Cloud version and the configuration approach used.
+	 Here are some common ways:
+
+	->Using Spring Cloud Netflix Eureka Starter:
+		This is the most common way to enable a Spring Boot application as a Eureka client. You can add the spring-cloud-starter-netflix-eureka-client dependency 
+		to your project and then annotate the main class with @EnableEurekaClient or @EnableDiscoveryClient annotations.
+
+	->Using Spring Cloud Gateway:
+		->If you are using Spring Cloud Gateway to route your requests, you can enable the Eureka client by adding the 
+		spring-cloud-starter-netflix-eureka-client dependency to your project and setting the spring.cloud.gateway.discovery.locator.enabled property to true.
+
+	->Using Spring Cloud Kubernetes:
+		->If you are running your Spring Boot application on Kubernetes, you can enable the Eureka client by adding the spring-cloud-starter-kubernetes-all 
+		dependency to your project and setting the spring.cloud.kubernetes.discovery.enabled property to true.
+
+	->Programmatically:
+		->You can also enable the Eureka client programmatically by creating a EurekaInstanceConfig and a DiscoveryClient bean in your application context.
+
+	->Note that in all of these approaches, you need to configure the Eureka server details in your application.properties or application.yml file.
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class EurekaClient1Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(EurekaClient1Application.class, args);
+	}
+
+}
+
+
+->in latest springboot need not to enable explicitly with out specifying also it can work bu how its works?
+	Starting from Spring Boot 2.4, the @EnableEurekaClient annotation is no longer required to enable the Eureka client. 
+	Instead, Spring Boot automatically detects the presence of the spring-cloud-starter-netflix-eureka-client dependency on the classpath and enables the 
+	Eureka client by default.
+
+	->This means that if you have included the spring-cloud-starter-netflix-eureka-client dependency in your project, you don't need to explicitly annotate your
+	 application class with @EnableEurekaClient. The Eureka client will be automatically enabled and will try to register with the Eureka server specified 
+	 in your application.properties or application.yml file.
+
+	->This behavior is part of Spring Boot's auto-configuration mechanism, which automatically configures beans based on the classpath dependencies
+	 and the configuration properties. The spring-cloud-starter-netflix-eureka-client dependency includes the necessary auto-configuration classes that set up 
+	 the Eureka client and register it with the Spring application context.
+
+	->However, if you need to customize the Eureka client configuration or add additional configuration options, you can still 
+	use the @EnableEurekaClient annotation and provide your own configuration classes.
+->or by using @EnableDiscoveryClient or @EnableEurekaClient you can specify. 
+
+
+configure properties in application.properties:
+===================================================
+#giving unique name to register to the eureka server
+spring.application.name=eureka-client1
+#giving url so that our application can registered to the specified eureka server
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+
+
 	
 
 
