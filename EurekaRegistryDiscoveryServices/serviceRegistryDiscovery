@@ -170,6 +170,27 @@ public class EurekaClient1Application {
 	use the @EnableEurekaClient annotation and provide your own configuration classes.
 ->or by using @EnableDiscoveryClient or @EnableEurekaClient you can specify. 
 
+what is the difference between EnableDiscoveryClient EnableEurekaClient?
+	->Both @EnableDiscoveryClient and @EnableEurekaClient annotations are used in Spring Cloud to enable service discovery in microservices architecture. 
+	However, there is a subtle difference between the two:
+
+@EnableDiscoveryClient:
+@EnableDiscoveryClient is a Spring Cloud annotation that is used to enable service discovery in a microservices-based application.
+ It provides a common way to enable service discovery for different service discovery clients, including Eureka, Zookeeper, and Consul. 
+ When you use @EnableDiscoveryClient, Spring Cloud will automatically configure the service registry and discovery components based on the 
+ client library that you have included in your classpath.
+
+@EnableEurekaClient:
+@EnableEurekaClient is a Spring Cloud annotation that is used specifically for enabling service discovery with Eureka. When you use @EnableEurekaClient, 
+Spring Cloud will automatically configure the Eureka client components based on the Eureka client library that you have included in your classpath.
+ @EnableEurekaClient provides a shortcut for configuring the Eureka client, but it is less flexible than @EnableDiscoveryClient since it only works with Eureka.
+
+In summary, @EnableDiscoveryClient is more flexible and can be used to enable service discovery with any service registry client, 
+while @EnableEurekaClient is a shortcut for enabling service discovery with Eureka specifically. If you plan to use other service discovery clients
+ in the future, it is recommended to use @EnableDiscoveryClient
+
+
+
 
 configure properties in application.properties:
 ===================================================
@@ -179,7 +200,54 @@ spring.application.name=eureka-client1
 eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
 
 
-	
+Advanced topics of eureka :
+===============================
+
+some imp eureka properties:
+==============================
+	=>eureka.client.service-url.defaultZone:
+		->This property is used to specify the URL of the Eureka server that the Eureka client will use to register and discover services. 
+		By default, the Eureka client will use the URL http://localhost:8761/eureka to connect to the Eureka server,
+		 but you can override this by setting the eureka.client.service-url.defaultZone property to the URL of your Eureka server.
+
+	=>eureka.instance.prefer-ip-address:
+		->This property is used to specify whether the Eureka client should use the IP address of the machine instead of the hostname
+		 when registering with the Eureka server. By default, the Eureka client will use the hostname of the machine, but you can set the 
+		 eureka.instance.prefer-ip-address property to true to use the IP address instead.
+
+	=>eureka.client.registry-fetch-interval-seconds:
+		->This property is used to specify the interval (in seconds) at which the Eureka client should fetch the registry information from the Eureka server. 
+		By default, the Eureka client will fetch the registry information every 30 seconds, but you can adjust this interval by setting
+		 the eureka.client.registry-fetch-interval-seconds property.
+
+	->eureka.client.healthcheck.enabled:
+		->This property is used to enable or disable the health check feature of the Eureka client. By default, the health check feature is enabled,
+		 and the Eureka client will periodically send health check requests to its registered services. You can disable this feature by setting the 
+		 eureka.client.healthcheck.enabled property to false.
+
+	=>eureka.client.instance-info-replication-interval-seconds:
+		->This property is used to specify the interval (in seconds) at which the Eureka client should
+		 replicate its instance information to the Eureka server. By default, the Eureka client will replicate its instance information every 30 seconds, 
+		 but you can adjust this interval by setting the eureka.client.instance-info-replication-interval-seconds property.
+
+	=>The eureka.instance.hostname and eureka.instance.id properties are used to configure the Eureka client instance metadata in a microservices-based application.
+
+eureka.instance.hostname:
+eureka.instance.hostname is used to specify the hostname that the Eureka client will use to register with the Eureka server.
+ By default, the Eureka client will use the hostname of the machine that it is running on. However, in some cases, you may want to use a 
+ custom hostname for your service instance. For example, if your service is running inside a container, you may want to use the container hostname
+  instead of the machine hostname. In this case, you can set the eureka.instance.hostname property to the custom hostname that you want to use.
+
+eureka.instance.id:
+eureka.instance.id is used to specify the unique identifier for the Eureka client instance. By default, the Eureka client will 
+generate a random instance ID using the hostname and a random number. However, in some cases, you may want to use a custom instance ID for 
+your service instance. For example, if you have multiple instances of the same service running on different machines, you may want to use a custom 
+instance ID to differentiate them. In this case, you can set the eureka.instance.id property to the custom instance ID that you want to use.
+
+In summary, eureka.instance.hostname and eureka.instance.id properties are used to configure the Eureka client instance metadata, which includes the
+ hostname and unique identifier for the service instance. These properties are useful when you need to use a custom hostname or instance ID for your service
+  instance instead of the default values generated by the Eureka client.
+
 
 
 
